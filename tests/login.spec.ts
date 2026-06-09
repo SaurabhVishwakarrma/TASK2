@@ -8,7 +8,7 @@ import { LoginPage } from '../pages/LoginPage';
 let loginpage: LoginPage
 
 
-test.describe('Login Functionality Using User Data', () => {
+test.describe('Login Functionality Using User Data ', () => {
 
 
   test.beforeEach(async ({ page }) => {
@@ -17,11 +17,11 @@ test.describe('Login Functionality Using User Data', () => {
     await loginpage.goto();
   });
 
-  test('TC_001 - Login page should load', async ({page})=> {
+  test('TC_001 - Login page should load @smoke', async ({page})=> {
     await loginpage.verifyLoginPageIsVisible()
 
   })
-  test('TC_002 - Valid user should be able to login', async ({ page }) => {
+  test('TC_002 - Valid user should be able to login @smoke', async ({ page }) => {
     
     const standardUser = users.find(u => u.type === 'standard');
     
@@ -34,7 +34,7 @@ test.describe('Login Functionality Using User Data', () => {
     await expect(page).toHaveURL(/.*inventory.html/);
   });
 
-    test('TC_003 - Invalid password should show error', async ({ page }) => {
+    test('TC_003 - Invalid password should show error @negative @smoke', async ({ page }) => {
     
     const standardUser = users.find(u => u.type === 'standard');
     
@@ -47,7 +47,7 @@ test.describe('Login Functionality Using User Data', () => {
     await expect(errorContainer1).toBeVisible;
   });
 
-  test('TC_004 - Locked user should not be able to login', async ({ page }) => {
+  test('TC_004 - Locked user should not be able to login @negative @smoke', async ({ page }) => {
     
     const lockedUser = users.find(u => u.type === 'locked');
     

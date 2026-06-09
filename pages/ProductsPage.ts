@@ -47,7 +47,7 @@ export class ProductsPage{
     }
 
     async verifyCartCount(expectedCount:number):Promise<void>{
-        await expect(this.cartBadge).toHaveCount(expectedCount)
+        await expect(this.cartBadge).toHaveText(expectedCount.toString())
         
     }
 
