@@ -29,7 +29,7 @@ test.describe("Checkout Validation Automation", () => {
         await page.goto('https://saucedemo.com');
    
 
-      await loginpage.login('standard_user', 'secret_sauce')
+      await loginAsStandardUser(page)
       await productpage.addProductToCart(product1.name);
 await productpage.addProductToCart(product2.name);
 await productpage.goToCart()
