@@ -1,64 +1,48 @@
-import { test, expect} from '@playwright/test'
-import { UserCredentials,UserType,users } from '../test-data/users';
-import { LoginPage } from '../pages/LoginPage';
+import { test, expect } from "../fixtures/baseFixtures";
+import { users } from "../test-data/users";
 
+import { messages } from "../constants/errorMessages";
+const validUser = users[0];
+const lockedUser = users[1];
+const invalidPasswordUser = users[3];
 
-// 
-
-let loginpage: LoginPage
-
-
-test.describe('Login Functionality Using User Data ', () => {
-
-
-  test.beforeEach(async ({ page }) => {
-    loginpage = new LoginPage(page)
-
-    await loginpage.goto();
+test.describe("Login Functionality Using User Data ", () => {
+  test.beforeEach(async ({ page, loginPage }) => {
+    await loginPage.goto();
   });
 
-  test('TC_001 - Login page should load @smoke', async ({page})=> {
-    await loginpage.verifyLoginPageIsVisible()
+  test("TC_001 - Login page should load @smoke", async ({
+    page,
+    loginPage,
+  }) => {
+    await loginPage.verifyLoginPageIsVisible();
+  });
+  test("TC_002 - Valid user should be able to login @smoke", async ({
+    page,
+    loginPage,
+  }) => {
+    await loginPage.login(validUser.username, validUser.password);
 
-  })
-  test('TC_002 - Valid user should be able to login @smoke', async ({ page }) => {
-    
-    const standardUser = users.find(u => u.type === 'standard');
-    
-    
-    if (!standardUser) throw new Error('Standard user not found ');
-
-    
-    await loginpage.login(standardUser.username,standardUser.password)
-
-    await expect(page).toHaveURL(/.*inventory.html/);
+    await loginPage.loginPageLoaded();
   });
 
-    test('TC_003 - Invalid password should show error @negative @smoke', async ({ page }) => {
-    
-    const standardUser = users.find(u => u.type === 'standard');
-    
-    
-    if (!standardUser) throw new Error('Standard user not found in mock data');
-
-    
-     await loginpage.login(standardUser.username,"123434")
-    const errorContainer1 = page.locator('.error-message-container error');
-    await expect(errorContainer1).toBeVisible;
+  test("TC_003 - Invalid password should show error @negative @smoke", async ({
+    page,
+    loginPage,
+  }) => {
+    await loginPage.login(
+      invalidPasswordUser.username,
+      invalidPasswordUser.password,
+    );
+    await loginPage.verifyErrorMessage(messages.loginWithInvalidPassword);
   });
 
-  test('TC_004 - Locked user should not be able to login @negative @smoke', async ({ page }) => {
-    
-    const lockedUser = users.find(u => u.type === 'locked');
-    
-    if (!lockedUser) throw new Error('Locked user not found in mock data');
+  test("TC_004 - Locked user should not be able to login @negative @smoke", async ({
+    page,
+    loginPage,
+  }) => {
+    await loginPage.login(lockedUser.username, lockedUser.password);
 
-    
-   await loginpage.login(lockedUser.username,lockedUser.password)
-
-    
-    const errorContainer = page.locator('.login-box .error-message-container');
-    await expect(errorContainer).toBeVisible();
+    await loginPage.verifyErrorMessage(messages.loginwithlockedUser);
   });
-
 });

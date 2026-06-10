@@ -1,97 +1,51 @@
-import {test,expect } from '@playwright/test'
-import { UserCredentials,UserType,users } from '../test-data/users'
-import { products } from '../test-data/products';
-import { LoginPage } from '../pages/LoginPage';
-import { ProductsPage } from '../pages/ProductsPage';
-import { CartPage } from '../pages/CartPage';
+import { test, expect } from "../fixtures/baseFixtures";
+import { users } from "../test-data/users";
+import { products } from "../test-data/products";
 
- let productone = products[0];
+let productone = products[0];
 let producttwo = products[1];
 
-
-
-let loginpage : LoginPage
-let productpage : ProductsPage
-let cartpage : CartPage
-
 test.describe("Product and Cart Automation testing", () => {
-    test.beforeEach(async({page}) => {
-       
-        await page.goto("https://saucedemo.com");
-       
-        loginpage = new LoginPage(page);
-        productpage = new ProductsPage(page);
-        cartpage = new CartPage(page);
+  test.beforeEach(async ({ loginPage }) => {
+    await loginPage.goto();
+    await loginPage.login(users[0].username, users[0].password);
+  });
 
+  test("TC_005 - Product List should be Visible @regression ", async ({
+    productsPage,
+  }) => {
+    await productsPage.verifyProductsPageIsVisible();
+  });
+  test("TC_006- Add one product to the cart @regression @cart", async ({
+    productsPage,
+  }) => {
+    await productsPage.addProductToCart(products[0].name);
+    await productsPage.verifyCartCount(1);
+  });
 
-   await loginpage.login('standard_user', 'secret_sauce')
+  test("TC_007- Remove one Product  @regression @cart", async ({
+    productsPage,
+  }) => {
+    await productsPage.addProductToCart(products[0].name);
+    await productsPage.verifyCartCount(1);
+    await productsPage.removeProductFromCart(products[0].name);
+    await productsPage.checkCartBadgeIfNoProducts();
+  });
 
-    })
+  test("TC_009- Cart page should show selected products @regression @cart", async ({
+    productsPage,
+    cartPage,
+  }) => {
+    await productsPage.addMultipleProducts();
+    await productsPage.goToCart();
+    await cartPage.verifyProductInCart(products[0].name);
+    await cartPage.verifyProductInCart(products[1].name);
+  });
 
-
-   test('TC_005 - Product List should be Visible @regression ', async ({page})=> {
-
-     await productpage.verifyProductsPageIsVisible()
-
-
-
-  })
-     test('TC_006- Add one product to the cart @regression @cart', async ({page})=> {
-
-
-    await productpage.addProductToCart(productone.name);
-     await productpage.verifyCartCount(1)
-
-})
-
-
-
-test('TC_007- Remove one Product  @regression @cart', async ({page})=> {
-await productpage.addProductToCart(productone.name)
-await productpage.verifyCartCount(1)
-await productpage.removeProductFromCart(productone.name);
-await expect(page.locator('[data-test= "shopping-cart-badge"]')).toHaveCount(0)
-
-})
-
-
-
-test('TC_009- Cart page should show selected products @regression @cart', async ({page})=> {
-
-
-await productpage.addProductToCart(productone.name);
-await productpage.addProductToCart(producttwo.name);
-await productpage.goToCart()
-await cartpage.verifyProductInCart(productone.name)
-await cartpage.verifyProductInCart(producttwo.name)
-
-
-
-
-
-
-})
-
-test("TC_008 Add multiple products to cart @regression @cart ", async ({ page }) => {
-   await productpage.addProductToCart(productone.name);
-   await productpage.addProductToCart(producttwo.name);
-  await productpage.verifyCartCount(2);
+  test("TC_008 Add multiple products to cart @regression @cart ", async ({
+    productsPage,
+  }) => {
+    await productsPage.addMultipleProducts();
+    await productsPage.verifyCartCount(products.length);
+  });
 });
-
- 
-
-
-
-
-
-
-
-
-
-})
-
-
-
-
-   
-
