@@ -6,28 +6,22 @@ https://saucedemo.com
 
 This framework covers:
 
- >> Login Functionality
+ - Login Functionality
 
- >> Negative Login Validations
+  - Negative Login Validations
+  - Product Listing Verification
+  - Add to Cart Functionality
+  - Remove from Cart Functionality
+  - Card Validation
+  - Checkout Validation
 
- >> Product Listing Verification
-
- >> Add to Cart Functionality
-
- >> Remove from Cart Functionality
-
- >> Card Validation
-
- >> Checkout Validation
- 
- >> Order Confirmation Verification
-
+ >>Order Confirmation Verification
  This framework follows the Page Object Model design patterns and uses Typescript for strong typing and better maintainability
 
 
  Technologies Used 
-  > Playwright
-  > Typescript
+  - Playwright
+  - Typescript
   
   Installation Step:
   > git clone https://github.com/SaurabhVishwakarrma/TASK2/
@@ -41,7 +35,7 @@ This framework covers:
   For running tests:
 use command
   > npx playwright test
-  >npx playwright test --ui
+  > npx playwright test --ui
 
 
   For Running any specific tests:
@@ -57,27 +51,35 @@ use command
 Tests Coverage :
 
 Login:
- >> Verify Login page loads Successfully
- >> Login with valid credentials
- >> Login with invalid password
- >> Login with locked user
+ - Verify Login page loads Successfully
+ - Login with valid credentials
+ - Login with invalid password
+ - Login with locked user
 
  Products:
- >> Verify products page is displayed
- >> Add products to cart
- >> Add multiple products to cart
- >> remove one product
+ - Verify products page is displayed
+ - Add products to cart
+ - Add multiple products to cart
+ - remove one product
 
  Cart :
- >> Verify Selected Products in cart
- >> Remove products from cart
- >> Verify the cart count updates correctly
+ - Verify Selected Products in cart
+ - Remove products from cart
+ - Verify the cart count updates correctly
 
  Checkout:
- >>Checkout with valid details
- >> Checkout with missing first name
- >> Checkout with missing postal code
- >> Verify Successful order placement
+ - Checkout with valid details
+ - Checkout with missing first name
+ - Checkout with missing postal code
+ - Verify Successful order placement
 
- Tags Used:
- @smoke @regression @negative @cart @checkout
+ Tags Used within the task:
+
+ - @smoke -> Critical Functionality
+ - @regression -> Full regression tests
+ - @negative  -> Cart Related Tests
+ - @cart  -> Checkout related Tests
+ - @checkout -> Negative scenario Testcases
+
+> To run the specific tagged tests use
+>> npx playwright test --grep "@<tag_name>" 
