@@ -1,16 +1,23 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { routes } from "../constants/routes";
 
 export class CheckoutPage {
   readonly page: Page;
   readonly fname: Locator;
   readonly lname: Locator;
   readonly pcode: Locator;
+  readonly finish: Locator;
+  readonly continue: Locator;
+  readonly errorbox: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.fname = page.locator('[data-test = "firstName"]');
     this.lname = page.locator('[data-test = "lastName"]');
     this.pcode = page.locator('[data-test = "postalCode"]');
+    this.finish = page.locator('[data-test = "finish"]');
+    this.continue = page.locator('[data-test = "continue"]');
+    this.errorbox = page.locator('[data-test = "error"]');
   }
 
   async fillCheckoutDetails(
@@ -24,18 +31,16 @@ export class CheckoutPage {
   }
 
   async continueCheckout(): Promise<void> {
-    await this.page.locator('[data-test = "continue"]').click();
+    await this.continue.click();
   }
   async checkValidationpage(): Promise<void> {
-    await expect(this.page).toHaveURL(
-      "https://www.saucedemo.com/checkout-step-two.html",
-    );
+    await expect(this.page).toHaveURL(routes.steptwo);
   }
   async verifyValidationMessage(expectedMessage: string): Promise<void> {
     await expect(this.page.getByText(expectedMessage)).toBeVisible();
   }
   async finishCheckout(): Promise<void> {
-    await this.page.locator('[data-test = "finish"]').click();
+    await this.finish.click();
   }
   async verifyOrderConfirmation(): Promise<void> {
     await expect(
@@ -43,8 +48,6 @@ export class CheckoutPage {
     ).toBeVisible();
   }
   async verifyError(expectedMessage: string): Promise<void> {
-    await expect(this.page.locator('[data-test = "error"]')).toHaveText(
-      expectedMessage,
-    );
+    await expect(this.errorbox).toHaveText(expectedMessage);
   }
 }

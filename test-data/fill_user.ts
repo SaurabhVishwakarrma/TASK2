@@ -2,7 +2,7 @@ export interface Userdata {
   firstname: string;
   lastname: string;
   postalcode: string;
-  type? : string;
+  type?: string;
 }
 
 export const Userdatas: Userdata[] = [

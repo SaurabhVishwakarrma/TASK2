@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { routes } from "../constants/routes";
 export class LoginPage {
   readonly page: Page;
   readonly usernameInput: Locator;
@@ -14,7 +15,7 @@ export class LoginPage {
     this.errorMessage = page.locator('[data-test = "error"]');
   }
   async goto(): Promise<void> {
-    await this.page.goto("https://www.saucedemo.com/");
+    await this.page.goto(routes.login);
   }
 
   async login(username: string, password: string): Promise<void> {
@@ -33,6 +34,6 @@ export class LoginPage {
     await expect(this.errorMessage).toContainText(expectedMessage);
   }
   async loginPageLoaded(): Promise<void> {
-    await expect(this.page).toHaveURL(/.*inventory.html/);
+    await expect(this.page).toHaveURL(routes.products);
   }
 }

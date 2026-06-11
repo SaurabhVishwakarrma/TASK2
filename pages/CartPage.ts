@@ -4,10 +4,12 @@ import { products } from "../test-data/products";
 export class CartPage {
   readonly page: Page;
   readonly continueshop: Locator;
+  readonly checkoutlink: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.continueshop = page.locator('[data-test="continue-shopping"]');
+    this.checkoutlink = page.locator('[data-test="checkout"]');
   }
 
   async verifyProductInCart(productName: string): Promise<void> {
@@ -17,6 +19,6 @@ export class CartPage {
     await this.continueshop.click();
   }
   async checkout(): Promise<void> {
-    await this.page.locator('[data-test="checkout"]').click();
+    await this.checkoutlink.click();
   }
 }
